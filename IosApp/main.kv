@@ -1,0 +1,88 @@
+#:kivy 2.0.0
+<SecondScreen>:
+    id: scren2
+    Label:
+        id: lb1
+        text: "text"
+        font_size: 70
+        size_hint: .05, .05
+        pos_hint: {'center_x': 0.5,'center_y': 0.5}
+    
+    Button:
+        text: "Back"
+        font_size: 50
+        size_hint: .15, .08
+        pos_hint: {'center_x': 0.3,'center_y': 0.3}
+        on_press: root.main_screen()
+
+<MainScreen>:
+    id: scren1
+    Label:
+        text: '[b]Perfect[/b] [i][color=4073FF]Store[/color][/i]'
+        markup: True
+        font_size: 120
+        size_hint: .1, .1
+        pos_hint: {'center_x': 0.5,'center_y': 0.7}
+
+    Label:
+        text: '[b][i]ARTIKLI:[/i][/b]'
+        markup: True
+        font_size: 60
+        size_hint: .1, .1
+        pos_hint: {'center_x': 0.2,'center_y': 0.55}
+
+    Button:
+        text: 'Kruh'
+        font_size: 40
+        size_hint: .17, .08
+        pos_hint: {'center_x': 0.2,'center_y': 0.4}
+        on_press: root.changeScreen("Artikl: Kruh \nCijena: 8.00 kn \nKolicina: 20")
+
+    Button:
+        text: 'Sladoled'
+        font_size: 40
+        size_hint: .17, .08
+        pos_hint: {'center_x': 0.4,'center_y': 0.4}
+        on_press: root.changeScreen("Artikl: Sladoled \nCijena: 20.00 kn \nKolicina: 30")
+    
+    Button:
+        text: 'Jaja'
+        font_size: 40
+        size_hint: .17, .08
+        pos_hint: {'center_x': 0.6,'center_y': 0.4}
+        on_press: root.changeScreen("Artikl: Jaja \nCijena: 13.00 kn \nKolicina: 21")
+
+    Button:
+        text: 'Majoneza'
+        font_size: 40
+        size_hint: .18, .08
+        pos_hint: {'center_x': 0.8,'center_y': 0.4}
+        on_press: root.changeScreen("Artikl: Majoneza \nCijena: 16.00 kn \nKolicina: 32")
+
+    Button:
+        text: 'Jabuke'
+        font_size: 40
+        size_hint: .17, .08
+        pos_hint: {'center_x': 0.2,'center_y': 0.25}
+        on_press: root.changeScreen("Artikl: Jabuke \nCijena: 6.00 kn \nKolicina: 60")
+
+    Button:
+        text: 'Nutella'
+        font_size: 40
+        size_hint: .17, .08
+        pos_hint: {'center_x': 0.4,'center_y': 0.25}
+        on_press: root.changeScreen("Artikl: Nutella \nCijena: 22.00 kn \nKolicina: 30")
+
+    Button:
+        text: 'Meso'
+        font_size: 40
+        size_hint: .17, .08
+        pos_hint: {'center_x': 0.6,'center_y': 0.25}
+        on_press: root.changeScreen("Artikl: Meso \nCijena: 40.00 kn \nKolicina: 18")
+
+    Button:
+        text: 'Jogurt'
+        font_size: 40
+        size_hint: .17, .08
+        pos_hint: {'center_x': 0.8,'center_y': 0.25}
+        on_press: root.changeScreen("Artikl: Jogurt \nCijena: 20.00 kn \nKolicina: 15")
