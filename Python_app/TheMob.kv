@@ -1,0 +1,50 @@
+#:import utils kivy.utils
+
+<Button>
+    font_size: "20dp"
+    bold: True
+    background_normal: ""
+    background_color: utils.get_color_from_hex("#4472C4")
+    outline_color: (0,0,0)
+    outline_width: "5dp"
+
+<MyLayout>
+
+    canvas.before:
+        Color:
+            rgba:(185/255.0, 202/255.0, 233/255.0, .95)
+        Rectangle:
+            pos:self.pos
+            size:self.size
+
+    BoxLayout:
+        orientation: "vertical"
+        size: root.width, root.height
+        spacing: "20dp"
+        padding: "60dp"
+
+        Label:
+            text: "Perfect Store"
+            font_size: "32dp"
+            color: (0,0,1,1)
+            bold: True
+            italic: True
+            size_hint: ("0.3dp", "0.3dp")
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            outline_color: (0,0,0,1)
+            outline_width: "8dp"
+
+        Button:
+            text: "Test1"
+            size_hint: ("0.3dp", "0.15dp")
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+        Button:
+            text: "Test2"
+            size_hint: ("0.3dp","0.15dp")
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+        Button:
+            text: "Test3"
+            size_hint: ("0.3dp","0.15dp")
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
