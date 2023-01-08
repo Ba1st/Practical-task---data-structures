@@ -1,0 +1,215 @@
+<PrintBillsScreen>:
+    md_bg_color: 228/250, 234/250, 246/250, 255/250
+
+    id: screen4
+
+    MDRectangleFlatIconButton:
+        icon: "arrow-left"
+        text: '[b][color=000000]Back[/color][/b]'
+        markup: True
+        font_size: 32
+        md_bg_color: 0, 153/250, 1, 255/250
+        theme_text_color: "Custom"
+        theme_icon_color: "Custom"
+        icon_color: "white"
+        elevation: 2
+        pos_hint: {'center_x': 0.2,'center_y': 0.1}
+        on_press: root.ChangeScreen('main')
+
+<AmountSoldScreen>:
+    md_bg_color: 228/250, 234/250, 246/250, 255/250
+
+    id: screen3
+
+    MDRectangleFlatIconButton:
+        icon: "arrow-left"
+        text: '[b][color=000000]Back[/color][/b]'
+        markup: True
+        font_size: 32
+        md_bg_color: 0, 153/250, 1, 255/250
+        theme_text_color: "Custom"
+        theme_icon_color: "Custom"
+        icon_color: "white"
+        elevation: 2
+        pos_hint: {'center_x': 0.2,'center_y': 0.1}
+        on_press: root.ChangeScreen('main')
+
+<CalendarScreen>:
+    md_bg_color: 228/250, 234/250, 246/250, 255/250
+
+    id: screen2
+
+    MDRectangleFlatIconButton:
+        icon: "open-in-app"
+        text: '[b][color=000000]Open Calendar[/color][/b]'
+        markup: True
+        font_size: 32
+        md_bg_color: 0, 153/250, 1, 255/250
+        theme_text_color: "Custom"
+        theme_icon_color: "Custom"
+        icon_color: "white"
+        elevation: 2
+        pos_hint: {'center_x': 0.5,'center_y': 0.5}
+        on_press: root.DatePicker()
+
+    MDRectangleFlatIconButton:
+        icon: "arrow-left"
+        text: '[b][color=000000]Back[/color][/b]'
+        markup: True
+        font_size: 32
+        md_bg_color: 0, 153/250, 1, 255/250
+        theme_text_color: "Custom"
+        theme_icon_color: "Custom"
+        icon_color: "white"
+        elevation: 2
+        pos_hint: {'center_x': 0.2,'center_y': 0.1}
+        on_press: root.ChangeScreen('main')    
+
+<StoreLocationScreen>:
+    md_bg_color: 228/250, 234/250, 246/250, 255/250
+
+    id: screen_SL
+
+    MDRectangleFlatIconButton:
+        icon: "arrow-left"
+        text: '[b][color=000000]Back[/color][/b]'
+        markup: True
+        font_size: 32
+        md_bg_color: 0, 153/250, 1, 255/250
+        theme_text_color: "Custom"
+        theme_icon_color: "Custom"
+        icon_color: "white"
+        elevation: 2
+        pos_hint: {'center_x': 0.2,'center_y': 0.1}
+        on_press: root.ChangeScreen('main')
+
+<MailScreen>:
+    md_bg_color: 228/250, 234/250, 246/250, 255/250
+
+    id: screen_M
+
+    MDRectangleFlatIconButton:
+        icon: "arrow-left"
+        text: '[b][color=000000]Back[/color][/b]'
+        markup: True
+        font_size: 32
+        md_bg_color: 0, 153/250, 1, 255/250
+        theme_text_color: "Custom"
+        theme_icon_color: "Custom"
+        icon_color: "white"
+        elevation: 2
+        pos_hint: {'center_x': 0.2,'center_y': 0.1}
+        on_press: root.ChangeScreen('main')
+
+<PhonebookScreen>:
+    md_bg_color: 228/250, 234/250, 246/250, 255/250
+
+    id: screen_P
+
+    MDRectangleFlatIconButton:
+        icon: "arrow-left"
+        text: '[b][color=000000]Back[/color][/b]'
+        markup: True
+        font_size: 32
+        md_bg_color: 0, 153/250, 1, 255/250
+        theme_text_color: "Custom"
+        theme_icon_color: "Custom"
+        icon_color: "white"
+        elevation: 2
+        pos_hint: {'center_x': 0.2,'center_y': 0.1}
+        on_press: root.ChangeScreen('main')
+
+<NewsScreen>:
+    md_bg_color: 228/250, 234/250, 246/250, 255/250
+
+    id: screen_N
+
+    MDRectangleFlatIconButton:
+        icon: "arrow-left"
+        text: '[b][color=000000]Back[/color][/b]'
+        markup: True
+        font_size: 32
+        md_bg_color: 0, 153/250, 1, 255/250
+        theme_text_color: "Custom"
+        theme_icon_color: "Custom"
+        icon_color: "white"
+        elevation: 2
+        pos_hint: {'center_x': 0.2,'center_y': 0.1}
+        on_press: root.ChangeScreen('main')
+
+<SettingsScreen>:
+    md_bg_color: 228/250, 234/250, 246/250, 255/250
+
+    id: screen_S
+
+    MDRectangleFlatIconButton:
+        icon: "arrow-left"
+        text: '[b][color=000000]Back[/color][/b]'
+        markup: True
+        font_size: 32
+        md_bg_color: 0, 153/250, 1, 255/250
+        theme_text_color: "Custom"
+        theme_icon_color: "Custom"
+        icon_color: "white"
+        elevation: 2
+        pos_hint: {'center_x': 0.2,'center_y': 0.1}
+        on_press: root.ChangeScreen('main')
+
+<MainScreen>:
+    md_bg_color: 228/250, 234/250, 246/250, 255/250
+
+    id: screen1
+
+    Label:
+        text: '[b][color=000000][size=90]P[/size][size=85]erfect[/size][/color][i][color=4073FF][size=90]S[/size]tore[/color][/i][/b]'
+        markup: True
+        font_size: 75
+        size_hint: 0.1, 0.1
+        pos_hint: {'center_x': 0.5,'center_y': 0.9}
+
+    MDFloatingActionButtonSpeedDial:
+        id: speedDial
+        icon: "dots-horizontal"
+        data: app.data
+        root_button_anim: True
+        hint_animation: False
+        bg_hint_color: "white"
+
+    MDRectangleFlatIconButton:
+        icon: "credit-card-outline"
+        text: '[b][color=000000]Print Bills[/color][/b]'
+        markup: True
+        font_size: 32
+        md_bg_color: 0, 153/250, 1, 255/250
+        theme_text_color: "Custom"
+        theme_icon_color: "Custom"
+        icon_color: "white"
+        elevation: 2
+        pos_hint: {'center_x': 0.2,'center_y': 0.7}
+        on_press: root.ChangeScreen('bill')
+
+    MDRectangleFlatIconButton:
+        icon: "currency-usd"
+        text: '[b][color=000000]Amount Sold[/color][/b]'
+        markup: True
+        font_size: 32
+        md_bg_color: 0, 153/250, 1, 255/250
+        theme_text_color: "Custom"
+        theme_icon_color: "Custom"
+        icon_color: "white"
+        elevation: 2
+        pos_hint: {'center_x': 0.23,'center_y': 0.6}
+        on_press: root.ChangeScreen('amount')
+
+    MDRectangleFlatIconButton:
+        icon: "calendar"
+        text: '[b][color=000000]Calendar[/color][/b]'
+        markup: True
+        font_size: 32
+        md_bg_color: 0, 153/250, 1, 255/250
+        theme_text_color: "Custom"
+        theme_icon_color: "Custom"
+        icon_color: "white"
+        elevation: 2
+        pos_hint: {'center_x': 0.19,'center_y': 0.5}
+        on_press: root.ChangeScreen('calendar')
