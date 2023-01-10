@@ -1,0 +1,352 @@
+<PrintBillsScreen>:
+
+    id: screen4
+    #md_bg_color: app.theme_cls.primary_color
+
+    MDRaisedButton:
+        id: printAll
+        markup: True
+        text: "[b]Print[/b]"
+        pos_hint: {'center_x': 0.2,'center_y': 0.8}
+        font_size: 35
+    
+    MDCard:
+        id: BillsCard
+        orientation: 'vertical'
+        pos_hint: {'center_x': 0.4,'center_y': 0.55}
+        size_hint: .5, .2
+        md_bg_color: "lightgrey"
+        elevation: 2
+        MDLabel:
+            text: "No Bills"
+            pos_hint: {'center_x': 0.6,'center_y': 0.0}
+
+
+
+    MDRectangleFlatIconButton:
+        id: BackButton
+        icon: "arrow-left"
+        markup: True
+        text: '[b]Back[/b]'
+        font_size: 32
+        md_bg_color: 0, 153/250, 1, 255/250
+        theme_text_color: "Custom"
+        theme_icon_color: "Custom"
+        icon_color: "white"
+        text_color: "black"
+        elevation: 2
+        pos_hint: {'center_x': 0.2,'center_y': 0.1}
+        on_press: root.ChangeScreen('main')
+
+<AmountSoldScreen>:
+
+    id: screen3
+    #md_bg_color: app.theme_cls.primary_color
+
+    MDRectangleFlatIconButton:
+        id: BackButton
+        icon: "arrow-left"
+        text: '[b]Back[/b]'
+        markup: True
+        font_size: 32
+        md_bg_color: 0, 153/250, 1, 255/250
+        theme_text_color: "Custom"
+        theme_icon_color: "Custom"
+        icon_color: "white"
+        text_color: "black"
+        elevation: 2
+        pos_hint: {'center_x': 0.2,'center_y': 0.1}
+        on_press: root.ChangeScreen('main')
+
+<CalendarScreen>:
+
+    id: screen2
+    #md_bg_color: app.theme_cls.primary_color
+
+    MDRectangleFlatIconButton:
+        id: OpenCalendar
+        icon: "open-in-app"
+        text: '[b]Open Calendar[/b]'
+        markup: True
+        font_size: 32
+        md_bg_color: 0, 153/250, 1, 255/250
+        theme_text_color: "Custom"
+        theme_icon_color: "Custom"
+        icon_color: "white"
+        text_color: "black"
+        elevation: 2
+        pos_hint: {'center_x': 0.5,'center_y': 0.5}
+        on_press: root.DatePicker()
+
+    MDRectangleFlatIconButton:
+        id: BackButton
+        icon: "arrow-left"
+        text: '[b]Back[/b]'
+        markup: True
+        font_size: 32
+        md_bg_color: 0, 153/250, 1, 255/250
+        theme_text_color: "Custom"
+        theme_icon_color: "Custom"
+        icon_color: "white"
+        text_color: "black"
+        elevation: 2
+        pos_hint: {'center_x': 0.2,'center_y': 0.1}
+        on_press: root.ChangeScreen('main')    
+
+<StoreLocationScreen>:
+
+    id: screen_SL
+    #md_bg_color: app.theme_cls.primary_color
+
+    MapView:
+        lat: 43.5147
+        lon: 16.4435
+        zoom: 10
+        MapMarkerPopup:
+            lat: 43.511516621926 
+            lon: 16.469018155855977
+            Label:
+                text: "Store name: FESB\nAddress: Ruđera Boškovića 32\nNumber: 123 - 456"
+                font_size: 18
+                color: 0,0,0,1 
+                bold: True
+
+    MDRectangleFlatIconButton:
+        id: BackButton
+        icon: "arrow-left"
+        text: '[b]Back[/b]'
+        markup: True
+        font_size: 32
+        md_bg_color: 0, 153/250, 1, 255/250
+        theme_text_color: "Custom"
+        theme_icon_color: "Custom"
+        icon_color: "white"
+        text_color: "black"
+        elevation: 2
+        pos_hint: {'center_x': 0.2,'center_y': 0.1}
+        on_press: root.ChangeScreen('main')
+
+<MailScreen>:
+
+    id: screen_M
+    #md_bg_color: app.theme_cls.primary_color
+    #228/250, 234/250, 246/250, 255/250
+
+    MDRectangleFlatIconButton:
+        id: BackButton
+        icon: "arrow-left"
+        text: '[b]Back[/b]'
+        markup: True
+        font_size: 32
+        md_bg_color: 0, 153/250, 1, 255/250
+        theme_text_color: "Custom"
+        theme_icon_color: "Custom"
+        icon_color: "white"
+        text_color: "black"
+        elevation: 2
+        pos_hint: {'center_x': 0.2,'center_y': 0.1}
+        on_press: root.ChangeScreen('main')
+
+<PhonebookScreen>:
+
+    id: screen_P
+    #md_bg_color: app.theme_cls.primary_color
+
+    MDRectangleFlatIconButton:
+        id: BackButton
+        icon: "arrow-left"
+        text: '[b]Back[/b]'
+        markup: True
+        font_size: 32
+        md_bg_color: 0, 153/250, 1, 255/250
+        theme_text_color: "Custom"
+        theme_icon_color: "Custom"
+        icon_color: "white"
+        text_color: "black"
+        elevation: 2
+        pos_hint: {'center_x': 0.2,'center_y': 0.1}
+        on_press: root.ChangeScreen('main')
+
+<NewsScreen>:
+
+    id: screen_N
+    #md_bg_color: app.theme_cls.primary_color
+
+
+    MDRectangleFlatIconButton:
+        id: BackButton
+        icon: "arrow-left"
+        text: '[b]Back[/b]'
+        markup: True
+        font_size: 32
+        md_bg_color: 0, 153/250, 1, 255/250
+        theme_text_color: "Custom"
+        theme_icon_color: "Custom"
+        icon_color: "white"
+        text_color: "black"
+        elevation: 2
+        pos_hint: {'center_x': 0.2,'center_y': 0.1}
+        on_press: root.ChangeScreen('main')
+
+<SettingsScreen>:
+
+    id: screen_S
+    #md_bg_color: app.theme_cls.primary_color
+
+    MDLabel:
+        id: LanguageLabel
+        text: "LANGUAGE"
+        text_color: "black"
+        bold: True
+        font_size: 50
+        pos_hint: {'center_x': 0.6,'center_y': 0.8}
+
+    MDRaisedButton:
+        markup: True
+        text: "[b]CRO[/b]"
+        font_size: 45
+        pos_hint: {'center_x': 0.5,'center_y': 0.7}
+        on_press: root.ChangeLanguage("CRO")
+    
+    MDRaisedButton:
+        markup: True
+        text: "[b]ENG[/b]"
+        font_size: 45
+        pos_hint: {'center_x': 0.5,'center_y': 0.6}
+        on_press: root.ChangeLanguage("ENG")
+
+    MDLabel:
+        id: ThemeLabel
+        text: "THEME"
+        text_color: "black"
+        bold: True
+        font_size: 50
+        pos_hint: {'center_x': 0.6,'center_y': 0.5}
+
+    MDRaisedButton:
+        id: DarkButton
+        markup: True
+        text: "[b]DARK[/b]"
+        font_size: 45
+        pos_hint: {'center_x': 0.5,'center_y': 0.4}
+        on_press: app.ChangeTheme("DARK"); root.ChangeText("DARK")
+    
+    MDRaisedButton:
+        id: LightButton
+        markup: True
+        text: "[b]LIGHT[/b]"
+        font_size: 45
+        pos_hint: {'center_x': 0.5,'center_y': 0.3}
+        on_press: app.ChangeTheme("LIGHT"); root.ChangeText("LIGHT")
+
+    MDRectangleFlatIconButton:
+        id: BackButton
+        icon: "arrow-left"
+        text: '[b]Back[/b]'
+        markup: True
+        font_size: 32
+        md_bg_color: 0, 153/250, 1, 255/250
+        theme_text_color: "Custom"
+        theme_icon_color: "Custom"
+        icon_color: "white"
+        text_color: "black"
+        elevation: 2
+        pos_hint: {'center_x': 0.2,'center_y': 0.1}
+        on_press: root.ChangeScreen('main')
+
+<MainScreen>:
+
+    id: screen1
+    #md_bg_color: app.theme_cls.primary_color
+
+    MDBottomNavigation:
+        MDBottomNavigationItem:
+            name: "Main"
+            text: 'Main'
+            icon: 'home'
+
+            Label:
+                id: mainTitle
+                text: '[b][color=000000][size=90]P[/size][size=85]erfect[/size][/color][i][color=4073FF][size=90]S[/size]tore[/color][/i][/b]'
+                markup: True
+                font_size: 75
+                size_hint: 0.1, 0.1
+                pos_hint: {'center_x': 0.5,'center_y': 0.9}
+
+            MDFloatingActionButtonSpeedDial:
+                id: speedDial
+                label_text_color: "black"
+                icon: "dots-horizontal"
+                data: app.data
+                root_button_anim: False
+                hint_animation: False
+                bg_hint_color: "white"
+                #on_open: card.ids.TransparentCard
+
+            MDRectangleFlatIconButton:
+                id: PrintBills
+                icon: "credit-card-outline"
+                text: '[b]Bills[/b]'
+                markup: True
+                font_size: 32
+                md_bg_color: 0, 153/250, 1, 255/250
+                theme_text_color: "Custom"
+                theme_icon_color: "Custom"
+                icon_color: "white"
+                text_color: "black"
+                elevation: 2
+                pos_hint: {'center_x': 0.38,'center_y': 0.8}
+                on_press: root.ChangeScreen('bill')
+
+            MDRectangleFlatIconButton:
+                id: AmountSold
+                icon: "currency-usd"
+                text: '[b]Amount Sold[/b]'
+                markup: True
+                font_size: 32
+                md_bg_color: 0, 153/250, 1, 255/250
+                theme_text_color: "Custom"
+                theme_icon_color: "Custom"
+                icon_color: "white"
+                text_color: "black"
+                elevation: 2
+                pos_hint: {'center_x': 0.28,'center_y': 0.73}
+                on_press: root.ChangeScreen('amount')
+
+            MDRectangleFlatIconButton:
+                id: Calendar
+                icon: "calendar"
+                text: '[b]Calendar[/b]'
+                markup: True
+                font_size: 32
+                md_bg_color: 0, 153/250, 1, 255/250
+                theme_text_color: "Custom"
+                theme_icon_color: "Custom"
+                icon_color: "white"
+                text_color: "black"
+                elevation: 2
+                pos_hint: {'center_x': 0.18,'center_y': 0.66}
+                on_press: root.ChangeScreen('calendar')
+
+        MDBottomNavigationItem:
+            name: "Bills"
+            text: 'Bills'
+            icon: 'credit-card-outline'
+
+            MDRaisedButton:
+                id: printAll
+                markup: True
+                text: "[b]Print[/b]"
+                pos_hint: {'center_x': 0.2,'center_y': 0.8}
+                font_size: 35
+    
+            MDCard:
+                id: BillsCard
+                orientation: 'vertical'
+                pos_hint: {'center_x': 0.4,'center_y': 0.55}
+                size_hint: .5, .2
+                md_bg_color: "lightgrey"
+                elevation: 2
+                MDLabel:
+                    text: "No Bills"
+                    pos_hint: {'center_x': 0.6,'center_y': 0.0}
