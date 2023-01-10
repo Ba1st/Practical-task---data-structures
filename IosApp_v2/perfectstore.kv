@@ -49,8 +49,21 @@
         theme_icon_color: "Custom"
         icon_color: "white"
         elevation: 2
-        pos_hint: {'center_x': 0.5,'center_y': 0.5}
+        pos_hint: {'center_x': 0.5,'center_y': 0.8}
         on_press: root.DatePicker()
+
+    Label:
+        canvas.before:
+            Color:
+                rgba: 0, 153/250, 1, 255/250
+            Rectangle:
+                size: self.size
+                pos: self.pos
+        text: 'Tekst za taj dan'
+        font_size: 20
+        color: 0,0,0,1
+        size_hint: 0.7, 0.4
+        pos_hint: {'center_x':0.5, 'center_y':0.45}
 
     MDRectangleFlatIconButton:
         icon: "arrow-left"
@@ -69,6 +82,19 @@
     md_bg_color: 228/250, 234/250, 246/250, 255/250
 
     id: screen_SL
+
+    MapView:
+        lat: 43.5147
+        lon: 16.4435
+        zoom: 10
+        MapMarkerPopup:
+            lat: 43.511516621926 
+            lon: 16.469018155855977
+            Label:
+                text: "Store name: FESB\nAddress: Ruđera Boškovića 32\nNumber: 123 - 456"
+                font_size: 18
+                color: 0,0,0,1 
+                bold: True
 
     MDRectangleFlatIconButton:
         icon: "arrow-left"

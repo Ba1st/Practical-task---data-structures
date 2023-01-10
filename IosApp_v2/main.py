@@ -7,6 +7,9 @@ from kivymd.uix.screen import MDScreen
 from kivymd.uix.pickers import MDDatePicker
 from kivy.properties import DictProperty
 from kivy.core.window import Window
+from kivy_garden.mapview import MapView
+
+Window.clearcolor = (228/250, 234/250, 246/250, 255/250)
 
 ##Print Bills##
 class PrintBillsScreen(MDScreen):
@@ -49,7 +52,7 @@ class NewsScreen(MDScreen):
         self.manager.current = ScreenName
 
 ##Settings##
-class SettingsScreen(MDScreen):
+class SettingsScreen(MDScreen):      
     def ChangeScreen(self, ScreenName):
         self.manager.current = ScreenName
 
@@ -61,10 +64,11 @@ class MainScreen(MDScreen):
 class PerfectStoreApp(MDApp):
 
     data = DictProperty()
-    Window.size = (375, 812)
 
     def build(self):
+        
         sm = MDScreenManager()
+        #self.theme_cls_primary= "228/250, 234/250, 246/250, 255/250"
         
         self.data = {
             'Store Location': [
