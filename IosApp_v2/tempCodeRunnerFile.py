@@ -1,0 +1,1 @@
+self.theme_cls_primary
