@@ -132,6 +132,57 @@
     #md_bg_color: app.theme_cls.primary_color
     #228/250, 234/250, 246/250, 255/250
 
+    BoxLayout: 
+        orientation: "vertical"
+        padding: 50
+        Label:
+            text: "Unread mails:"
+            color: 0,0,0
+            bold: True
+            size_hint: (0.5,0.5)
+            text_size: self.size
+            halign: "left"
+            valign: "center"
+        ScrollView:
+            MDList:
+                spacing: 10
+                TwoLineListItem:
+                    text: "[b]Name[/b]"
+                    secondary_text: "message"
+                TwoLineListItem:
+                    text: "[b]Name[/b]"
+                    secondary_text: "message"
+                TwoLineListItem:
+                    text: "[b]Name[/b]"
+                    secondary_text: "message"
+                TwoLineListItem:
+                    text: "[b]Name[/b]"
+                    secondary_text: "message"
+        Label:
+            text: "Read mails:"
+            color: 0,0,0
+            bold: True
+            size_hint: (0.5,0.5)
+            text_size: self.size
+            halign: "left"
+            valign: "center"
+        ScrollView:
+            MDList:
+                spacing: 10
+                TwoLineListItem:
+                    text: "[b]Name[/b]"
+                    secondary_text: "message"
+                TwoLineListItem:
+                    text: "[b]Name[/b]"
+                    secondary_text: "message"
+                TwoLineListItem:
+                    text: "[b]Name[/b]"
+                    secondary_text: "message"
+                TwoLineListItem:
+                    text: "[b]Name[/b]"
+                    secondary_text: "message"
+        Label:
+            text: ""
     MDRectangleFlatIconButton:
         id: BackButton
         icon: "arrow-left"
@@ -283,50 +334,50 @@
                 bg_hint_color: "white"
                 #on_open: card.ids.TransparentCard
 
-            MDRectangleFlatIconButton:
-                id: PrintBills
-                icon: "credit-card-outline"
-                text: '[b]Bills[/b]'
-                markup: True
-                font_size: 32
-                md_bg_color: 0, 153/250, 1, 255/250
-                theme_text_color: "Custom"
-                theme_icon_color: "Custom"
-                icon_color: "white"
-                text_color: "black"
-                elevation: 2
-                pos_hint: {'center_x': 0.38,'center_y': 0.8}
-                on_press: root.ChangeScreen('bill')
+            BoxLayout:    
+                padding: 100
+                orientation: "vertical"
+                Label: 
+                    text: "Hello,\nWe are hoping that you have a great day"
+                    color: 0,0,0
+                    text_size: self.size
+                    halign: "center"
+                    valign: "center"
+                    size_hint: (0.5,0.5)
+                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                Label:
+                    text: "News:"
+                    color: 0,0,0
+                    bold: True
+                    size_hint: (0.5,0.5)
+                    text_size: self.size
+                    halign: "left"
+                    valign: "center"
+                ScrollView:
+                    size_hint: (0.85,1)
+                    MDList:
+                        spacing: 10
+                        TwoLineRightIconListItem:
+                            text: "[b]Lemon price today[/b]"
+                            secondary_text: "Today the prices of lemons skyroketed"
+                            ImageRightWidget:
+                                source: "C:/Users/bartu/Downloads/index.jpg"
+                        TwoLineListItem:
+                            text: "[b]Title[/b]"
+                            secondary_text: "Text of article"
+                        TwoLineListItem:
+                            text: "[b]Title[/b]"
+                            secondary_text: "Text of article"
+                        TwoLineListItem:
+                            text: "[b]Title[/b]"
+                            secondary_text: "Text of article"
+                        TwoLineListItem:
+                            text: "[b]Title[/b]"
+                            secondary_text: "Text of article"
+                        TwoLineListItem:
+                            text: "[b]Title[/b]"
+                            secondary_text: "Text of article"
 
-            MDRectangleFlatIconButton:
-                id: AmountSold
-                icon: "currency-usd"
-                text: '[b]Amount Sold[/b]'
-                markup: True
-                font_size: 32
-                md_bg_color: 0, 153/250, 1, 255/250
-                theme_text_color: "Custom"
-                theme_icon_color: "Custom"
-                icon_color: "white"
-                text_color: "black"
-                elevation: 2
-                pos_hint: {'center_x': 0.28,'center_y': 0.73}
-                on_press: root.ChangeScreen('amount')
-
-            MDRectangleFlatIconButton:
-                id: Calendar
-                icon: "calendar"
-                text: '[b]Calendar[/b]'
-                markup: True
-                font_size: 32
-                md_bg_color: 0, 153/250, 1, 255/250
-                theme_text_color: "Custom"
-                theme_icon_color: "Custom"
-                icon_color: "white"
-                text_color: "black"
-                elevation: 2
-                pos_hint: {'center_x': 0.18,'center_y': 0.66}
-                on_press: root.ChangeScreen('calendar')
 
         MDBottomNavigationItem:
             name: "Bills"

@@ -56,8 +56,10 @@ class SettingsScreen(MDScreen):
         
     def ChangeLanguage(self, lang):
         
-        cro = ["Nazad", "Otvori Kalendar", "JEZIK", "Isprintaj Racune", "Prodano", "Kalendar", "TEME", "MRAČNO", "SVJETLO"]    
-        eng = ["Back", "Open Calendar", "LANGUAGE", "Print Bills", "Amount Sold", "Calendar", "THEME", "DARK", "LIGHT"]
+        cro = ["Nazad", "Otvori Kalendar", "JEZIK", "Isprintaj Racune", "Prodano", "Kalendar", "TEME", "MRAČNO", "SVJETLO", 
+                "Bok", "Nadamo se da ste imali dobar dan", "Novosti"]    
+        eng = ["Back", "Open Calendar", "LANGUAGE", "Print Bills", "Amount Sold", "Calendar", "THEME", "DARK", "LIGHT", 
+                "Hello", "We are hoping that you have a great day", "News"]
         screens = ['bill', 'amount', 'calendar', 'SL', 'M', 'P', 'N', 'S']
     
         if lang == "CRO":
@@ -107,7 +109,6 @@ class MainScreen(MDScreen):
 class PerfectStoreApp(MDApp):
 
     data = DictProperty()
-    Window.size = (375, 812)
 
     def build(self):
         sm = ScreenManager()
