@@ -132,11 +132,14 @@
     #md_bg_color: app.theme_cls.primary_color
     #228/250, 234/250, 246/250, 255/250
 
-    BoxLayout: 
+    MDCard:
+        elevation: 4
         orientation: "vertical"
-        padding: 50
+        radius: [20]
+        size_hint: (.9, .35)
+        pos_hint: {"center_x": .5, "center_y": .8}
         Label:
-            text: "Unread mails:"
+            text: "     Unread mails:"
             color: 0,0,0
             bold: True
             size_hint: (0.5,0.5)
@@ -146,43 +149,60 @@
         ScrollView:
             MDList:
                 spacing: 10
-                TwoLineListItem:
-                    text: "[b]Name[/b]"
-                    secondary_text: "message"
-                TwoLineListItem:
-                    text: "[b]Name[/b]"
-                    secondary_text: "message"
-                TwoLineListItem:
-                    text: "[b]Name[/b]"
-                    secondary_text: "message"
-                TwoLineListItem:
-                    text: "[b]Name[/b]"
-                    secondary_text: "message"
+                ThreeLineListItem:
+                    text: "[b]Withdrawal of items from sale[/b]"
+                    secondary_text: "From: [i]marko.markic@perfectstore.com[/i]"
+                    tertiary_text: "Please, withdraw the cans of Fanta (sn: 123456)"
+                ThreeLineListItem:
+                    text: "[b]Order form[/b]"
+                    secondary_text: "From: [i]ana.anaic1@philipmorris.hr[/i]"
+                    tertiary_text: "Please fill out the order form from the attachment"
+                ThreeLineListItem:
+                    text: "[b]Presentation of the article[/b]"
+                    secondary_text: "From: [i]ivan.ivic356@gmail.com[/i]"
+                    tertiary_text: "Are you interested in displaying our products in your store?"
+                ThreeLineListItem:
+                    text: "[b]Payroll[/b]"
+                    secondary_text: "From: [i]karla.karlic7@office_perfectstore.com[/i]"
+                    tertiary_text: "Payroll of the branch office for the past fiscal year"
+        
+    MDCard:
+        elevation: 4
+        orientation: "vertical"
+        radius: [20]
+        size_hint: (.9, .35)
+        pos_hint: {"center_x": .5, "center_y": .4}
+
         Label:
-            text: "Read mails:"
+            text: "     Read mails:"
             color: 0,0,0
             bold: True
             size_hint: (0.5,0.5)
             text_size: self.size
             halign: "left"
             valign: "center"
+
         ScrollView:
+
             MDList:
                 spacing: 10
-                TwoLineListItem:
-                    text: "[b]Name[/b]"
-                    secondary_text: "message"
-                TwoLineListItem:
-                    text: "[b]Name[/b]"
-                    secondary_text: "message"
-                TwoLineListItem:
-                    text: "[b]Name[/b]"
-                    secondary_text: "message"
-                TwoLineListItem:
-                    text: "[b]Name[/b]"
-                    secondary_text: "message"
-        Label:
-            text: ""
+                ThreeLineListItem:
+                    text: "[b]Manager of the month[/b]"
+                    secondary_text: "From: [i]mate.matic@office_perfectstore.com[/i]"
+                    tertiary_text: "Congratulations, you won the [i]Manager of the Month[/i] award"
+                ThreeLineListItem:
+                    text: "[b]Sick leave[/b]"
+                    secondary_text: "From: [i]jelena.jelic08@gmail.com[/i]"
+                    tertiary_text: "Hello boss, I got sick, so I will open a sick leave for a period of one week"
+                ThreeLineListItem:
+                    text: "[b]Complaint[/b]"
+                    secondary_text: "From: [i]ivo.ivic91@gmail.com[/i]"
+                    tertiary_text: "I want to lodge a complaint about the behavior of your employees"
+                ThreeLineListItem:
+                    text: "[b]Payroll[/b]"
+                    secondary_text: "From: [i]ana.anic@office_perfectstore.com[/i]"
+                    tertiary_text: "The email contains the salary list for the 12th month of 2022"
+
     MDRectangleFlatIconButton:
         id: BackButton
         icon: "arrow-left"
@@ -324,6 +344,65 @@
                 size_hint: 0.1, 0.1
                 pos_hint: {'center_x': 0.5,'center_y': 0.9}
 
+            MDLabel: 
+                text: "Hello\nWe are hoping that you have a great day"
+                color: 0,0,0
+                text_size: self.size
+                halign: "center"
+                valign: "center"
+                size_hint: (0.5,0.5)
+                pos_hint: {"center_x": 0.5, "center_y": 0.7}
+                elevetion: 2
+
+            MDCard:
+                elevation: 5
+                orientation: "vertical"
+                radius: [25]
+                size_hint: (.8, .7)
+                pos_hint: {"center_x": 0.49, "center_y": .2}
+
+                MDLabel:
+                    text: "     News:"
+                    color: 0,0,0
+                    bold: True
+                    size_hint: (.7,.3)
+                    text_size: self.size
+                    halign: "left"
+                    valign: "center"
+
+                ScrollView:
+
+                    MDList:
+                        spacing: 10
+                        TwoLineRightIconListItem:
+                            text: "[b]Lemon price today[/b]"
+                            secondary_text: "Today the prices of lemons skyroketed"
+                            ImageRightWidget:
+                                source: "images/index.jpg"
+                        TwoLineRightIconListItem:
+                            text: "[b]Fanta cans withdrawn from sale[/b]"
+                            secondary_text: "Larger amounts of ethylene oxide are found in cans of Fanta in stores"
+                            ImageRightWidget:
+                                source: "images/001603604.webp"
+                        TwoLineRightIconListItem:
+                            text: "[b]Customs duty reduction[/b]"
+                            secondary_text: "The government has reduced customs duties on goods from the UK"
+                            ImageRightWidget:
+                                source: "images/istockphoto-1034405652-612x612.jpg"
+                        TwoLineRightIconListItem:
+                            text: "[b]Problems with the euro[/b]"
+                            secondary_text: "Many shops ran out of euro banknotes due to careless customers"
+                            ImageRightWidget:
+                                source: "images/euro.png"
+                        TwoLineRightIconListItem:
+                            text: "[b]Prohibition of price increases[/b]"
+                            secondary_text: "The government has banned raising the prices of bread, milk and meat"
+                            ImageRightWidget:
+                                source: "images/o_420342_1024.jpg"
+                        TwoLineListItem:
+                            text: ""
+                            secondary_text: ""
+
             MDFloatingActionButtonSpeedDial:
                 id: speedDial
                 label_text_color: "black"
@@ -333,51 +412,7 @@
                 hint_animation: False
                 bg_hint_color: "white"
                 #on_open: card.ids.TransparentCard
-
-            BoxLayout:    
-                padding: 100
-                orientation: "vertical"
-                Label: 
-                    text: "Hello,\nWe are hoping that you have a great day"
-                    color: 0,0,0
-                    text_size: self.size
-                    halign: "center"
-                    valign: "center"
-                    size_hint: (0.5,0.5)
-                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
-                Label:
-                    text: "News:"
-                    color: 0,0,0
-                    bold: True
-                    size_hint: (0.5,0.5)
-                    text_size: self.size
-                    halign: "left"
-                    valign: "center"
-                ScrollView:
-                    size_hint: (0.85,1)
-                    MDList:
-                        spacing: 10
-                        TwoLineRightIconListItem:
-                            text: "[b]Lemon price today[/b]"
-                            secondary_text: "Today the prices of lemons skyroketed"
-                            ImageRightWidget:
-                                source: "C:/Users/bartu/Downloads/index.jpg"
-                        TwoLineListItem:
-                            text: "[b]Title[/b]"
-                            secondary_text: "Text of article"
-                        TwoLineListItem:
-                            text: "[b]Title[/b]"
-                            secondary_text: "Text of article"
-                        TwoLineListItem:
-                            text: "[b]Title[/b]"
-                            secondary_text: "Text of article"
-                        TwoLineListItem:
-                            text: "[b]Title[/b]"
-                            secondary_text: "Text of article"
-                        TwoLineListItem:
-                            text: "[b]Title[/b]"
-                            secondary_text: "Text of article"
-
+                elevation: 5
 
         MDBottomNavigationItem:
             name: "Bills"
