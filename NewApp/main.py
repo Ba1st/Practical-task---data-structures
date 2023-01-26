@@ -16,7 +16,8 @@ from kivymd.uix.menu import MDDropdownMenu
 from kivy.uix.textinput import TextInput
 from kivymd.uix.swiper import MDSwiper, MDSwiperItem
 from kivymd.uix.label import MDLabel
-import os
+from kivymd.uix.snackbar import Snackbar
+from database import save_to_database
 
 ##Store Location##
 class StoreLocationScreen(MDScreen):
@@ -32,11 +33,14 @@ class PhonebookScreen(MDScreen):
     card = None
     textField_1 = None
     textField_2 = None
+    listOfPeople = []
         
     def add_card(self):
         
         self.textField_1 = MDTextField(
             hint_text = "Name",
+            helper_text = "Max. Num. of characters is 16",
+            helper_text_mode = "persistent",
             font_size = 25,
             size_hint_x = .8,
             pos_hint = {'center_x': .5,'center_y': .8},
@@ -44,9 +48,11 @@ class PhonebookScreen(MDScreen):
         
         self.textField_2 = MDTextField(
             hint_text = "Number",
+            helper_text = "Max. Num. of characters is 12",
+            helper_text_mode = "persistent",
             font_size = 25,
             size_hint_x = .8,
-            pos_hint = {'center_x': .5,'center_y': .5},
+            pos_hint = {'center_x': .5,'center_y': .45},
         )
         
         self.card = MDCard(
@@ -79,24 +85,39 @@ class PhonebookScreen(MDScreen):
         
         name = str(self.textField_1.text)
         number = str(self.textField_2.text)
+        print(len(number))
+        
+        if len(name) > 16 or len(number) > 12:
+            Snackbar(text="Maximum number of characters exceeded!", snackbar_x=10, snackbar_y=10, size_hint_y=.08,
+                     size_hint_x=(Window.width - (10 * 2)) / Window.width, bg_color=(0, 153/250, 1, 255/250)).open()
+        else:
+            database = r"database.db"
+            conn = save_to_database.create_connection(database)
 
-        with open('phonebook.txt','a') as file:
-            file.write(f'{self.textField_1.text} {self.textField_2.text}\n')
-        
-        self.manager.get_screen('P').ids.PhoneBookNumbers.add_widget(
-            TwoLineIconListItem(
-                IconLeftWidget(
-                    icon="account"
-                ),
-                text = str(name) + ' ',
-                secondary_text = "Number: " + str(number),
-                on_release = self.PressedItem,
-                bg_color = (1,1,1,1),
-                radius = [25]
-                )
-        )
-        
-        self.remove_widget(self.card)
+            with conn:
+                    phonebook = (str(name), str(number))
+                    phonebook_id = save_to_database.create_phonebook(conn, phonebook)
+
+                    save = []
+                    save.append(str(name))
+                    save.append(phonebook_id)
+                    self.listOfPeople.append(save)
+
+            self.manager.get_screen('P').ids.PhoneBookNumbers.add_widget(
+                TwoLineIconListItem(
+                    IconLeftWidget(
+                        icon="account"
+                    ),
+                    text = str(name) + ' ',
+                    secondary_text = "Number: " + str(number),
+                    on_release = self.PressedItem,
+                    bg_color = (1,1,1,1),
+                    radius = [25]
+                    )
+            )
+
+            self.remove_widget(self.card)
+            conn.close()
     
     def Cancel(self, obj):
         self.remove_widget(self.card)
@@ -116,16 +137,22 @@ class PhonebookScreen(MDScreen):
     def deleteItem(self):
 
         if PerfectStoreApp.delPerson:
-            person = str(PerfectStoreApp.delPerson.text) + str(PerfectStoreApp.delPerson.secondary_text.replace('Number: ', ''))
-            with open('phonebook.txt', 'r') as file:
-                    with open('temp.txt','a+') as temp:
-                        for line in file:
-                            if not line.strip('\n').startswith(f'{person}'):
-                                temp.write(line)
-            os.replace('temp.txt', 'phonebook.txt')
+            priority = 0
+            for i in self.listOfPeople:
+                nameFromList = str(i[0].strip())
+                nameFromItem = str(PerfectStoreApp.delPerson.text.strip())
+                if nameFromItem == nameFromList:
+                    priority = i[1]
+                    break
+            
+            database = r"database.db"
+            conn = save_to_database.create_connection(database)
+            with conn:
+                save_to_database.delete_phonebook(conn, priority)
             
             self.manager.get_screen('P').ids.PhoneBookNumbers.remove_widget(PerfectStoreApp.delPerson)
             PerfectStoreApp.delPerson = None
+            conn.close()
 
 ##Settings##
 class SettingsScreen(MDScreen):
@@ -149,6 +176,11 @@ class MainScreen(MDScreen):
                   
 class PerfectStoreApp(MDApp):
 
+    #database
+    TasksList = []
+    ListOfSeconderyID = []
+    secondery_id = 1
+
     #class objects
     obj_p = PhonebookScreen()
     delPerson = None
@@ -163,7 +195,6 @@ class PerfectStoreApp(MDApp):
     #Storing bill data
     string = ""
     Bill = []
-    BillPaths = []
     menuForDisplaying = None
     menuForDeleting = None
     
@@ -172,7 +203,6 @@ class PerfectStoreApp(MDApp):
     textField_1 = None
     textField_2 = None
     textInput_3 = None
-    deleteCard = None
     
     #Amount sold screen data
     totalProfit = 0
@@ -275,16 +305,20 @@ class PerfectStoreApp(MDApp):
         
         self.textField_1 = MDTextField(
             hint_text = "Bill Name:",
+            helper_text = "Max. Num. of characters is 12",
+            helper_text_mode = "persistent",
             font_size = 25,
             size_hint_x = .8,
-            pos_hint = {'center_x': .5,'center_y': .85},
+            pos_hint = {'center_x': .5,'center_y': .9},
         )
         
         self.textField_2 = MDTextField(
             hint_text = "Date:",
+            helper_text = "YYYY-MM-DD",
+            helper_text_mode = "persistent",
             font_size = 25,
             size_hint_x = .8,
-            pos_hint = {'center_x': .5,'center_y': .7},
+            pos_hint = {'center_x': .5,'center_y': .72},
         )
         
         self.textInput_3 = TextInput(
@@ -315,7 +349,7 @@ class PerfectStoreApp(MDApp):
                 )
             ),
             orientation = 'vertical',
-            size_hint = (.8, .3),
+            size_hint = (.8, .4),
             pos_hint = {'center_x': 0.5,'center_y': 0.5},
             elevation = 4,
             radius = [20],
@@ -323,51 +357,96 @@ class PerfectStoreApp(MDApp):
         self.sm.get_screen('main').add_widget(self.card)
     
     def AddBill(self, obj):
-        items = []
-        string_list = []
-        string = ""
-        dic = {'Name' : "", 'Date' : "", 'Items' : []}
         
-        dic['Name'] = str(self.textField_1.text)
-        dic['Date'] = str(self.textField_2.text + "\n")
-        
-        filepath = f"Racuni/{self.textField_1.text}.txt"
-        self.BillPaths.append(filepath)
-        
-        with open(filepath, "a") as BillFile:
-            BillFile.write(f"{str(self.textField_2.text)}\n")
-            BillFile.write(str(self.textInput_3.text))
-        
-        with open('racuni.txt', 'r') as file:
-            with open('temp.txt', 'w') as copy:
-                for line in file:
-                    copy.write(line)
-                copy.write(filepath + "\n")
-        
-        os.replace('temp.txt', 'racuni.txt')
-        for i in self.textInput_3.text.splitlines():
-            items.append(str(i)+"\n")
-        
-        dic['Items'] = items
-        self.Bill.append(dic)
-        
-        for x in items:
-            for y in x:
-                if y != ' ' and y != '\n':
-                    string += y
+        count = 1
+        string_test = ""
+        state = True
+        for i in self.textInput_3.text:
+            if i is not " " and i is not "\n":
+                pass
+            else: 
+                count += 1
+                
+        for i in self.textField_2.text:
+            if i is not "-" and i is not "\n":
+                if i.isdigit():
+                    pass
                 else:
-                    string_list.append(string)
-                    string = ""
+                    state = False
+                    break
+            else:
+                if i is not "-" and i is not "\n":
+                    state = False
+                    break
+                
+        if len(self.textField_1.text) is 0 or len(self.textField_2.text) is 0 or len(self.textInput_3.text) is 0:
+            Snackbar(text="Please fill in every text field!", snackbar_x=10, snackbar_y=10, size_hint_y=.08,
+                     size_hint_x=(Window.width - (10 * 2)) / Window.width, bg_color=(0, 153/250, 1, 255/250)).open()
+        elif state is False:
+            Snackbar(text="Incorrect date format!", snackbar_x=10, snackbar_y=10, size_hint_y=.08,
+                     size_hint_x=(Window.width - (10 * 2)) / Window.width, bg_color=(0, 153/250, 1, 255/250)).open()
+        elif len(self.textField_1.text) > 12:
+            Snackbar(text="Name of the bill exceeded 12 characters!", snackbar_x=10, snackbar_y=10, size_hint_y=.08,
+                     size_hint_x=(Window.width - (10 * 2)) / Window.width, bg_color=(0, 153/250, 1, 255/250)).open()
+        elif (count%3) != 0:
+            Snackbar(text="Missing item information!", snackbar_x=10, snackbar_y=10, size_hint_y=.08,
+                     size_hint_x=(Window.width - (10 * 2)) / Window.width, bg_color=(0, 153/250, 1, 255/250)).open()
+        else:
+            items = []
+            string_list = []
+            string = ""
+            SeconderyIDList = list(set(self.ListOfSeconderyID))
+            dic = {'ID': 0,'Name' : "", 'Date' : "", 'Items' : []}
 
-        self.TotalAmount(string_list)
-        
-        self.totalProfit = round(self.totalProfit,2)
-        self.sm.get_screen('main').ids.TotalProfit.text = f"TOTAL PROFIT: {self.totalProfit}$"
-        
-        self.sm.get_screen('main').remove_widget(self.card)
+            dic['Name'] = str(self.textField_1.text)
+            dic['Date'] = str(self.textField_2.text + "\n")
+
+            database = r"database.db"
+            conn = save_to_database.create_connection(database)
+
+            if len(SeconderyIDList) is not 0:
+                self.secondery_id = SeconderyIDList[-1:][0] + 1
+
+            string = ""
+            item = ""
+            listOfItemInfo = []
+            for i in self.textInput_3.text.splitlines():
+                items.append(str(i)+"\n")
+                item = items[-1:][0]
+                for x in item:
+
+                    if x is not " " and x is not "\n":
+                        string += x
+                    else:
+                        listOfItemInfo.append(string)
+                        string = ""
+                with conn:
+                    bill = (self.secondery_id, self.textField_1.text, self.textField_2.text, str(listOfItemInfo[0]), str(listOfItemInfo[1]), str(listOfItemInfo[2]))
+                    bill_id = save_to_database.create_bills(conn, bill)
+                listOfItemInfo.clear()
+            dic['ID'] = self.secondery_id
+            self.secondery_id += 1
+            dic['Items'] = items
+            self.Bill.append(dic)
+
+            for x in items:
+                for y in x:
+                    if y is not ' ' and y is not '\n':
+                        string += y
+                    else:
+                        string_list.append(string)
+                        string = ""
+
+            self.TotalAmount(string_list)
+
+            self.totalProfit = round(self.totalProfit,2)
+            self.sm.get_screen('main').ids.TotalProfit.text = f"TOTAL PROFIT: {self.totalProfit}$"
+
+            self.sm.get_screen('main').remove_widget(self.card)
+            conn.close()
         
     def LoadBills(self, item):
-        if item == "None":
+        if item is "None":
             for i in self.Bill:
                 self.string += f"{str(i['Name'])}\n{str(i['Date'])}{' '.join(i['Items'])}\n"
             self.sm.get_screen('main').ids.BillContent.text = f'[b]{self.string}[/b]'
@@ -375,45 +454,46 @@ class PerfectStoreApp(MDApp):
         else:
             self.menuForDisplaying.dismiss()
             for i in self.Bill:
-                if i['Name'] == item:
+                if i['Name'] is item:
                     self.string = f"{str(i['Name'])}\n{str(i['Date'])}{' '.join(i['Items'])}\n"
                     self.sm.get_screen('main').ids.BillContent.text = f'[b]{self.string}[/b]'
             self.string = ""
             
     def DeleteBills(self, item):
         
-        a = 0
         minus = 0
         string_list = []
         string = ""
+        id = 0
         for i in self.Bill:
-            if i['Name'] == item:
-                self.Bill.remove(i)
+            if i['Name'] is item:
                 
                 for x in i['Items']:
                     for x in i['Items']:
                         for y in x:
-                            if y != ' ' and y != '\n':
+                            if y is not ' ' and y is not '\n':
                                 string += y
                             else:
                                 string_list.append(string)
                                 string = ""
 
                 minus = int(string_list[1]) * float(string_list[2])
+                id = i['ID']
+                database = r"database.db"
+                conn = save_to_database.create_connection(database)
+                for x in self.ListOfSeconderyID:
+                    if id is x:
+                        with conn:
+                            save_to_database.delete_bills(conn, id)
+                    self.ListOfSeconderyID.remove(x)
                 
-                os.remove(str(self.BillPaths[a]))
-                with open('/Users/pierstrbad/Desktop/Programi/Python/Kivy/NewApp/racuni.txt', 'r') as file:
-                    with open('temp.txt','w') as temp:
-                        for line in file:
-                            if not line.strip("\n").startswith(str(self.BillPaths[a])):
-                                temp.write(line)
-                                
-                self.BillPaths.remove(self.BillPaths[a])
+                self.Bill.remove(i)
                 break
-            a+=1
-        os.replace('temp.txt', '/Users/pierstrbad/Desktop/Programi/Python/Kivy/NewApp/racuni.txt')
-        self.sm.get_screen('main').ids.TotalProfit.text = f"TOTAL PROFIT: {str(self.totalProfit-round(minus,2))}$"
+        
+        print(minus)
+        self.sm.get_screen('main').ids.TotalProfit.text = f"TOTAL PROFIT: {str(self.totalProfit-round(minus,2))}HRK"
         self.menuForDeleting.dismiss()
+        conn.close()
     
     def Cancel(self, obj):
         if self.card:
@@ -466,7 +546,7 @@ class PerfectStoreApp(MDApp):
         
         self.sm.get_screen('main').ids.item.text = f"Item: {instance}"
         self.sm.get_screen('main').ids.amount.text = f"Amount Sold: {str(total_amount)}"
-        self.sm.get_screen('main').ids.price.text = f"Price: {str(price)}$"
+        self.sm.get_screen('main').ids.price.text = f"Price: {str(price)}HRK"
         self.sm.get_screen('main').ids.storage.text = f"In Storage: {str(self.InStorage - total_amount)}"
         self.menuForItems.dismiss()
     
@@ -474,6 +554,8 @@ class PerfectStoreApp(MDApp):
         
         self.textField_1_task = MDTextField(
             hint_text = "Task Name",
+            helper_text = "Max. Num. of characters is 16",
+            helper_text_mode = "persistent",
             font_size = 25,
             size_hint_x = .8,
             pos_hint = {'center_x': .5,'center_y': .85},
@@ -484,7 +566,7 @@ class PerfectStoreApp(MDApp):
             font_size = 35,
             hint_text_color = (0, 153/250, 1, 135/250),
             size_hint = (.8, .5),
-            pos_hint = {'center_x': .5,'center_y': .5},
+            pos_hint = {'center_x': .5,'center_y': .45},
             multiline = True,
             background_color = (0,0,0,0),
         )
@@ -518,16 +600,31 @@ class PerfectStoreApp(MDApp):
     def addTask(self, obj):
         
         if self.card_task:
-            if not self.textField_1_task.text and not self.textInput_2_task.text:
-                self.textField_1_task.text = "Task: None"
-                self.textInput_2_task.text = "Information: None"
+            if len(self.textField_1_task.text) > 16:
+                Snackbar(text="Name of the task exceeded 12 characters!", snackbar_x=10, snackbar_y=10, size_hint_y=.08,
+                         size_hint_x=(Window.width - (10 * 2)) / Window.width, bg_color=(0, 153/250, 1, 255/250)).open()
+            elif len(self.textInput_2_task.text) > 60:
+                Snackbar(text="Description of the task exceeded 12 characters!", snackbar_x=10, snackbar_y=10, size_hint_y=.08,
+                         size_hint_x=(Window.width - (10 * 2)) / Window.width, bg_color=(0, 153/250, 1, 255/250)).open()
+            elif len(self.textField_1_task.text) is 0 or len(self.textInput_2_task.text) is 0:
+                Snackbar(text="Please fill in every text field!", snackbar_x=10, snackbar_y=10, size_hint_y=.08,
+                         size_hint_x=(Window.width - (10 * 2)) / Window.width, bg_color=(0, 153/250, 1, 255/250)).open()
+            else:
+                self.creatingASwiperItem(self.textField_1_task.text, self.textInput_2_task.text)
+                self.sm.get_screen('main').remove_widget(self.card_task)
+                self.card_task = None
 
-            self.creatingASwiperItem(self.textField_1_task.text, self.textInput_2_task.text)
-            self.sm.get_screen('main').remove_widget(self.card_task)
-            self.card_task = None
-            
-            with open('tasks.txt', 'a') as taskFile:
-                taskFile.write(f"Task Name: {self.textField_1_task.text}\nTask Description: {self.textInput_2_task.text}\n")
+                name = self.textField_1_task.text
+                description = self.textInput_2_task.text
+
+                database = r"database.db"
+                conn = save_to_database.create_connection(database)
+                with conn:
+                    tasks = (name,description)
+                    tasks_id = save_to_database.create_task(conn,tasks)
+                    self.TasksList.append(tasks_id)
+
+                conn.close()
         
     def CheckTask(self, instance):
         
@@ -541,50 +638,123 @@ class PerfectStoreApp(MDApp):
             
     def removeTask(self, instance):
         
+        id = 0
         for i in range(len(self.listOfButtons)):
-            if self.listOfButtons[i] == instance:
+            if self.listOfButtons[i] is instance:
                 self.sm.get_screen('main').ids.TaskSwiper.remove_widget(self.listOfTasks[i])
                 self.listOfTasks.remove(self.listOfTasks[i])
                 self.listOfButtons.remove(self.listOfButtons[i])
-                with open('tasks.txt', 'r') as file:
-                    counter = 0
-                    with open('temp.txt', 'a') as temp:
-                        for line in file:
-                            if counter != (i*2) and counter != (i*2+1):
-                                temp.write(line)
-                            counter += 1
+                
+                id = self.TasksList[i]
+                database = r"database.db"
+                conn = save_to_database.create_connection(database)
+                with conn:
+                    save_to_database.delete_task(conn, id)
+                self.TasksList.remove(self.TasksList[i])
                 break
-        os.replace('temp.txt', 'tasks.txt')
-    
                 
     def on_start(self):
-        items = []
-        string_list = []
+        
+        database = r"database.db"
+        conn = save_to_database.create_connection(database)
+        sql_task = """ CREATE TABLE IF NOT EXISTS tasks (
+                        id integer PRIMARY KEY,
+                        name text NOT NULL,
+                        description text NOT NULL
+                    ); """
+                    
+        sql_phonebook = """ CREATE TABLE IF NOT EXISTS phonebook (
+                            id integer PRIMARY KEY,
+                            name text NOT NULL,
+                            number text NOT NULL
+                        ); """
+                        
+        sql_bills = """ CREATE TABLE IF NOT EXISTS bills(
+                            id integer PRIMARY KEY,
+                            secondery_id integer NOT NULL,
+                            name text NOT NULL,
+                            date text NOT NULL,
+                            item text NOT NULL,
+                            amount text NOT NULL,
+                            price text NOT NULL
+                        ); """
+        
+        if conn is not None:
+            save_to_database.create_table(conn, sql_task)
+            save_to_database.create_table(conn, sql_phonebook)
+            save_to_database.create_table(conn, sql_bills)
+        else:
+            print("Error! No connection with database.")
+            
+        phonebookList = None
+        taskList = None
+        bills = None
+        with conn:
+            phonebookList = save_to_database.select_all_phonebook(conn)
+            
+        if len(phonebookList) is not 0:
+            for i in phonebookList:
+                self.sm.get_screen('P').ids.PhoneBookNumbers.add_widget(
+                    TwoLineIconListItem(
+                        IconLeftWidget(
+                            icon="account"
+                        ),
+                        text = str(i[1]).strip('\n'),
+                        secondary_text = "Number: " + str(i[2]).strip('\n'),
+                        on_release = self.obj_p.PressedItem,
+                        bg_color = (1,1,1,1),
+                        radius = [25]
+                    )
+                )
+                save = []
+                save.append(str(i[1]))
+                save.append(i[0])
+                PhonebookScreen.listOfPeople.append(save)
+        
+        save_to_database.create_connection(database)
+        with conn:
+            taskList = save_to_database.select_every_task(conn)
+            
+        if len(taskList) is not 0:
+            for i in taskList:
+                self.creatingASwiperItem(i[1],i[2])
+                self.TasksList.append(i[0])
+                
+        with conn:
+            bills = save_to_database.selec_all_bills(conn)
+
+        if len(bills) is not 0:
+            
+            pos = 0
+            lenOfBills = 0
+            items = []
+            SeconderyIDList = []
+            
+            for i in bills:
+                self.ListOfSeconderyID.append(i[1])
+
+            SeconderyIDList = list(set(self.ListOfSeconderyID))
+            lenOfBills = len(bills)
+            for i in SeconderyIDList:
+                dict = {'ID': 0,'Name': "",'Date': "",'Items': []}
+                while bills[pos][1] is i:
+                    items.append(f'{str(bills[pos][4])} {str(bills[pos][5])} {str(bills[pos][6])}\n')
+                    pos += 1
+                    if pos is lenOfBills:
+                        break
+                dict['ID'] = bills[pos-1][1]
+                dict['Name'] = bills[pos-1][2]
+                dict['Date'] = f'{bills[pos-1][3]}\n'
+                dict['Items'] = items
+                self.Bill.append(dict)
+                items = []
+
         string = ""
-        i = 1
-        
-        with open('/Users/pierstrbad/Desktop/Programi/Python/Kivy/NewApp/racuni.txt', 'r') as file:
-            for x in file:
-                if x != "\n":
-                    bill = open(x.strip(),"r")
-                    self.BillPaths.append(x.strip())
-                    dict = {'Name': "",'Date': "", 'Items': []}
-                    for a in bill:
-                        if a[0].isdigit():
-                            dict['Date'] = a
-                        else:
-                            dict['Name'] = f'Racun {i}'
-                            items.append(a)
-                    dict['Items'] = items
-                    self.Bill.append(dict)
-                    items = []
-                    i += 1
-        
-        bill.close()
+        string_list = []
         for i in self.Bill:
             for x in i['Items']:
                 for y in x:
-                    if y != ' ' and y != '\n':
+                    if y is not ' ' and y is not '\n':
                         string += y
                     else:
                         string_list.append(string)
@@ -593,71 +763,17 @@ class PerfectStoreApp(MDApp):
         self.TotalAmount(string_list)
         
         self.totalProfit = round(self.totalProfit,2)
-        self.sm.get_screen('main').ids.TotalProfit.text = f"TOTAL PROFIT: {str(self.totalProfit)}$"
-        
-        temp_name = temp_number = ""
-        with open('phonebook.txt', 'r') as file:
-            if os.path.getsize('phonebook.txt') != 0:
-                for x in file:
-                    for i in x:
-                        if not i.isdigit():
-                            temp_name += i
-                        else:
-                            temp_number += i
-
-                    self.sm.get_screen('P').ids.PhoneBookNumbers.add_widget(
-                        TwoLineIconListItem(
-                            IconLeftWidget(
-                                icon="account"
-                            ),
-                            text = str(temp_name).strip('\n'),
-                            secondary_text = "Number: " + str(temp_number).strip('\n'),
-                            on_release = self.obj_p.PressedItem,
-                            bg_color = (1,1,1,1),
-                            radius = [25]
-                            )
-                    )
-                    temp_name = temp_number = ""
-                
-        with open('tasks.txt', 'r') as taskFile:
-            taskListFromFile = []
-            item = []
-            for i in taskFile:
-                if i.strip('\n').startswith("Task Name:"):
-                    item.append(i.replace('Task Name: ', ''))
-                elif i.strip('\n').startswith("Task Description:"):
-                    item.append(i.replace('Task Description: ', ''))
-                if len(item) == 2:
-                    taskListFromFile.append(item)
-                    item = []
-
-        for i in taskListFromFile:
-            name = i[0].strip()
-            description = i[1].strip()
-            self.creatingASwiperItem(name, description)
+        self.sm.get_screen('main').ids.TotalProfit.text = f"TOTAL PROFIT: {str(self.totalProfit)}HRK"
+        conn.close()
                 
     def on_stop(self):
-
-        #self.menuForDisplaying = None
-        #self.menuForDeleting = None
-        #self.card = None
-        #self.textField_1 = None
-        #self.textField_2 = None
-        #self.textInput_3 = None
-        #self.deleteCard = None
-        #self.menuForItems = None
-        #self.textField_1_task = None
-        #self.textInput_2_task = None
-        #self.card_task = None
-        #self.TaskItem = None
-        #self.checkbutton = None
-        #self.deleteButton = None
         
         self.Bill.clear()
-        self.BillPaths.clear()
         self.ListOfItems.clear()
         self.listOfTasks.clear()
         self.listOfButtons.clear()
+        self.TasksList.clear()
+        self.ListOfSeconderyID.clear()
 
     def TotalAmount(self, string_list):
         
@@ -674,7 +790,7 @@ class PerfectStoreApp(MDApp):
            elif not res:
                temp_list.append(test)
             
-        if self.ListOfItems == []:
+        if self.ListOfItems is []:
             self.ListOfItems = list(set(temp_list))
             self.ListOfItems.sort()
         else:
@@ -687,14 +803,14 @@ class PerfectStoreApp(MDApp):
                            icon = 'check-bold',
                            pos_hint = {'center_x': 0.55,'center_y': 0.2},
                            md_bg_color = "gray",
-                           elevation = None,
+                           elevation = 0,
                            on_release = self.CheckTask
                         )
         self.deleteButton = MDFloatingActionButton(
                        icon = 'delete',
                        pos_hint = {'center_x': 0.82,'center_y': 0.2},
                        md_bg_color = "red",
-                       elevation = None,
+                       elevation = 0,
                        on_release = self.removeTask
                     )
         self.TaskItem = MDSwiperItem(
@@ -709,7 +825,7 @@ class PerfectStoreApp(MDApp):
                            halign = 'center'
                        ),
                        orientation = 'vertical',
-                       elevation = 1,
+                       elevation = 0,
                        md_bg_color = (1,1,1,1),
                        size_hint = (0.9, 0.1),
                        pos_hint = {'center_x': 0.5,'center_y': 0.9}
@@ -724,7 +840,7 @@ class PerfectStoreApp(MDApp):
                            )
                        ),
                        orientation = 'vertical',
-                       elevation = 1,
+                       elevation = 0,
                        md_bg_color = (1,1,1,1),
                        size_hint = (.9, .4),
                        pos_hint = {'center_x': 0.5,'center_y': 0.6},

@@ -256,7 +256,7 @@
                 valign: "center"
                 size_hint: (0.5,0.5)
                 pos_hint: {"center_x": 0.5, "center_y": 0.7}
-                elevetion: 2
+                elevetion: 0
 
             MDCard:
                 md_bg_color: 0, 153/250, 1, 200/250
@@ -319,6 +319,7 @@
                 data: app.data
                 root_button_anim: True
                 bg_hint_color: "white"
+                elevation: 0
 
         MDBottomNavigationItem:
             name: "Bills"
@@ -343,7 +344,7 @@
                             id: BillContent
                             markup: True
                             text: '[b]None[/b]'
-                            font_size: 25
+                            font_size: 35
                             text_size: self.width, None
                             size_hint_y: None
                             height: self.texture_size[1]
@@ -354,6 +355,7 @@
                 text: "[b]Create Bill[/b]"
                 pos_hint: {'center_x': 0.7,'center_y': 0.1}
                 font_size: 35
+                elevation: 0
                 on_release: app.CreateBillPopUp()
 
             MDRaisedButton:
@@ -362,6 +364,7 @@
                 text: "[b]Delete Bill[/b]"
                 pos_hint: {'center_x': 0.3,'center_y': 0.1}
                 font_size: 35
+                elevation: 0
                 on_release: app.DropDownMenuForDeleting()
 
             MDRaisedButton:
@@ -370,6 +373,7 @@
                 text: "[b]Select[/b]"
                 pos_hint: {'center_x': 0.2,'center_y': 0.2}
                 font_size: 35
+                elevation: 0
                 on_release: app.DropDownMenuForDisplaying()
 
             MDRaisedButton:
@@ -378,6 +382,7 @@
                 text: "[b]Print All[/b]"
                 pos_hint: {'center_x': 0.5,'center_y': 0.2}
                 font_size: 35
+                elevation: 0
                 on_release: app.LoadBills("None")
 
             MDRaisedButton:
@@ -386,6 +391,7 @@
                 text: "[b]Clear[/b]"
                 pos_hint: {'center_x': 0.8,'center_y': 0.2}
                 font_size: 35
+                elevation: 0
                 on_release: root.ids.BillContent.text = '[b]None[/b]'
 
         MDBottomNavigationItem:
@@ -451,6 +457,7 @@
                 text: "[b]Choose Item[/b]"
                 font_size: 35
                 pos_hint: {'center_x': 0.5,'center_y': 0.35}
+                elevation: 0
                 on_release: app.DisplayItem()
 
         MDBottomNavigationItem:
@@ -475,4 +482,5 @@
             MDFloatingActionButton:
                 icon: 'plus'
                 pos_hint: {'center_x': 0.87,'center_y': 0.067}
+                elevation: 0
                 on_press: app.AddSwiperItem()
