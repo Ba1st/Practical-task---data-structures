@@ -85,7 +85,6 @@ class PhonebookScreen(MDScreen):
         
         name = str(self.textField_1.text)
         number = str(self.textField_2.text)
-        print(len(number))
         
         if len(name) > 16 or len(number) > 12:
             Snackbar(text="Maximum number of characters exceeded!", snackbar_x=10, snackbar_y=10, size_hint_y=.08,
@@ -257,40 +256,50 @@ class PerfectStoreApp(MDApp):
         return self.sm
     
     def DropDownMenuForDisplaying(self):
-        bill_items = [
-            {
-                "text": str(i['Name']),
-                "viewclass": "OneLineListItem",
-                "on_release": lambda x=str(i['Name']): self.LoadBills(x),
-            }for i in self.Bill
-        ]
         
-        self.menuForDisplaying = MDDropdownMenu(
-            caller = self.sm.get_screen('main').ids.SelectItem,
-            items = bill_items,
-            width_mult = 2,
-            max_height = 300,
-        )
-        
-        self.menuForDisplaying.open()
+        if len(self.Bill) is 0:
+             Snackbar(text="Bills to select: None", snackbar_x=10, snackbar_y=10, size_hint_y=.08,
+                     size_hint_x=(Window.width - (10 * 2)) / Window.width, bg_color=(0, 153/250, 1, 255/250)).open()
+        else:
+            bill_items = [
+                {
+                    "text": str(i['Name']),
+                    "viewclass": "OneLineListItem",
+                    "on_release": lambda x=str(i['Name']): self.LoadBills(x),
+                }for i in self.Bill
+            ]
+
+            self.menuForDisplaying = MDDropdownMenu(
+                caller = self.sm.get_screen('main').ids.SelectItem,
+                items = bill_items,
+                width_mult = 2,
+                max_height = 300,
+            )
+
+            self.menuForDisplaying.open()
     
     def DropDownMenuForDeleting(self):
-        bill_items = [
-            {
-                "text": str(i['Name']),
-                "viewclass": "OneLineListItem",
-                "on_release": lambda x=str(i['Name']): self.DeleteBills(x),
-            }for i in self.Bill
-        ]
         
-        self.menuForDeleting = MDDropdownMenu(
-            caller = self.sm.get_screen('main').ids.DeleteItem,
-            items = bill_items,
-            width_mult = 2,
-            max_height = 300,
-        )
-        
-        self.menuForDeleting.open()
+        if len(self.Bill) is 0:
+             Snackbar(text="Bills to delete: None", snackbar_x=10, snackbar_y=10, size_hint_y=.08,
+                     size_hint_x=(Window.width - (10 * 2)) / Window.width, bg_color=(0, 153/250, 1, 255/250)).open()
+        else:
+            bill_items = [
+                {
+                    "text": str(i['Name']),
+                    "viewclass": "OneLineListItem",
+                    "on_release": lambda x=str(i['Name']): self.DeleteBills(x),
+                }for i in self.Bill
+            ]
+
+            self.menuForDeleting = MDDropdownMenu(
+                caller = self.sm.get_screen('main').ids.DeleteItem,
+                items = bill_items,
+                width_mult = 2,
+                max_height = 300,
+            )
+
+            self.menuForDeleting.open()
     
     def ChangeTheme(self, theme):
             if theme == "DARK":
@@ -359,7 +368,6 @@ class PerfectStoreApp(MDApp):
     def AddBill(self, obj):
         
         count = 1
-        string_test = ""
         state = True
         for i in self.textInput_3.text:
             if i is not " " and i is not "\n":
@@ -423,6 +431,8 @@ class PerfectStoreApp(MDApp):
                 with conn:
                     bill = (self.secondery_id, self.textField_1.text, self.textField_2.text, str(listOfItemInfo[0]), str(listOfItemInfo[1]), str(listOfItemInfo[2]))
                     bill_id = save_to_database.create_bills(conn, bill)
+                    
+                self.ListOfSeconderyID.append(self.secondery_id)
                 listOfItemInfo.clear()
             dic['ID'] = self.secondery_id
             self.secondery_id += 1
@@ -440,10 +450,9 @@ class PerfectStoreApp(MDApp):
             self.TotalAmount(string_list)
 
             self.totalProfit = round(self.totalProfit,2)
-            self.sm.get_screen('main').ids.TotalProfit.text = f"TOTAL PROFIT: {self.totalProfit}$"
+            self.sm.get_screen('main').ids.TotalProfit.text = f"TOTAL PROFIT: {self.totalProfit}HRK"
 
             self.sm.get_screen('main').remove_widget(self.card)
-            conn.close()
         
     def LoadBills(self, item):
         if item is "None":
@@ -463,11 +472,11 @@ class PerfectStoreApp(MDApp):
         
         minus = 0
         string_list = []
+        string_list_2 = []
         string = ""
         id = 0
         for i in self.Bill:
             if i['Name'] is item:
-                
                 for x in i['Items']:
                     for x in i['Items']:
                         for y in x:
@@ -475,9 +484,11 @@ class PerfectStoreApp(MDApp):
                                 string += y
                             else:
                                 string_list.append(string)
+                                string_list_2.append(string)
                                 string = ""
-
-                minus = int(string_list[1]) * float(string_list[2])
+                
+                
+                string_list = list(dict.fromkeys(string_list))
                 id = i['ID']
                 database = r"database.db"
                 conn = save_to_database.create_connection(database)
@@ -486,11 +497,27 @@ class PerfectStoreApp(MDApp):
                         with conn:
                             save_to_database.delete_bills(conn, id)
                     self.ListOfSeconderyID.remove(x)
-                
+
                 self.Bill.remove(i)
-                break
+                print(string_list)
+                print(self.ListOfItems)
+                new_list = []
+                x = 0
+                for y in self.ListOfItems:
+                    for i in range(len(string_list)):
+                        if i is x:
+                            if string_list[i] is not y:
+                                new_list.append(y)
+                            break
+                    x+=3
+                                
+        string_list_2 = list(dict.fromkeys(string_list_2))
+        test = None
+        for i in range(len(string_list_2)-1):
+            test = string_list_2[i]
+            if test.isdigit():
+                minus += int(string_list_2[i]) * float(string_list_2[i+1])
         
-        print(minus)
         self.sm.get_screen('main').ids.TotalProfit.text = f"TOTAL PROFIT: {str(self.totalProfit-round(minus,2))}HRK"
         self.menuForDeleting.dismiss()
         conn.close()
@@ -505,23 +532,28 @@ class PerfectStoreApp(MDApp):
             self.card_task = None
               
     def DisplayItem(self):
-        items_ = [
-            {
-                "text": str(i),
-                "viewclass": "OneLineListItem",
-                "on_release": lambda x=str(i): self.ShowItem(x),
-            }for i in self.ListOfItems
-        ]
-        self.menuForItems = MDDropdownMenu(
-            caller = self.sm.get_screen('main').ids.SelectItem,
-            items = items_,
-            width_mult = 2,
-            border_margin = 24,
-            max_height = 350,
-            ver_growth = "down",
-        )
+        
+        if len(self.ListOfItems) is 0:
+             Snackbar(text="Items: None", snackbar_x=10, snackbar_y=10, size_hint_y=.08,
+                     size_hint_x=(Window.width - (10 * 2)) / Window.width, bg_color=(0, 153/250, 1, 255/250)).open()
+        else:
+            items_ = [
+                {
+                    "text": str(i),
+                    "viewclass": "OneLineListItem",
+                    "on_release": lambda x=str(i): self.ShowItem(x),
+                }for i in self.ListOfItems
+            ]
+            self.menuForItems = MDDropdownMenu(
+                caller = self.sm.get_screen('main').ids.SelectItem,
+                items = items_,
+                width_mult = 2,
+                border_margin = 24,
+                max_height = 350,
+                ver_growth = "down",
+            )
 
-        self.menuForItems.open()
+            self.menuForItems.open()
             
     def ShowItem(self, instance):
         
